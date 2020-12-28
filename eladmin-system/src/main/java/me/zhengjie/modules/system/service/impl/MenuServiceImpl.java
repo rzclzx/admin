@@ -238,7 +238,11 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<MenuDto> getMenus(Long pid) {
         List<Menu> menus;
-        menus = menuRepository.findByPid(pid);
+        if(pid != null && !pid.equals(0L)){
+            menus = menuRepository.findByPid(pid);
+        } else {
+            menus = menuRepository.findByPidIsNull();
+        }
         return menuMapper.toDto(menus);
     }
 

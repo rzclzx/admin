@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import me.zhengjie.annotation.Log;
 import me.zhengjie.modules.system.domain.Menu;
 import me.zhengjie.exception.BadRequestException;
+import me.zhengjie.modules.system.repository.MenuRepository;
 import me.zhengjie.modules.system.service.MenuService;
 import me.zhengjie.modules.system.service.dto.MenuDto;
 import me.zhengjie.modules.system.service.dto.MenuQueryCriteria;
@@ -51,6 +52,7 @@ public class MenuController {
     private final MenuService menuService;
     private final MenuMapper menuMapper;
     private static final String ENTITY_NAME = "menu";
+    private final MenuRepository menuRepository;
 
     @ApiOperation("导出菜单数据")
     @GetMapping(value = "/download")
@@ -63,7 +65,7 @@ public class MenuController {
     @GetMapping(value = "/tree")
     @PreAuthorize("@el.check('menu:list','roles:list')")
     public ResponseEntity getMenuTree(){
-        return new ResponseEntity<>(menuService.getMenuTree(menuService.findByPid(0)),HttpStatus.OK);
+        return new ResponseEntity<>(menuService.getMenuTree(menuRepository.findByPidIsNull()),HttpStatus.OK);
     }
 
     @GetMapping(value = "/build")
