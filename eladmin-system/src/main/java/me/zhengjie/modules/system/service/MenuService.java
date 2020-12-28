@@ -30,6 +30,10 @@ import java.util.Set;
  */
 public interface MenuService {
 
+    Object getMenuTree(List<Menu> menus);
+
+    List<Menu> findByPid(long pid);
+
     /**
      * 查询全部数据
      * @param criteria 条件

@@ -60,6 +60,32 @@ public class MenuServiceImpl implements MenuService {
     private final RedisUtils redisUtils;
 
     @Override
+    //@Cacheable(key = "'parentId:'+#p0")
+    public List<Menu> findByPid(long pid) {
+        return menuRepository.findByPid(pid);
+    }
+
+    @Override
+//    @Cacheable(key = "'tree'")
+    public Object getMenuTree(List<Menu> menus) {
+        List<Map<String,Object>> list = new LinkedList<>();
+        menus.forEach(menu -> {
+                    if (menu!=null){
+                        List<Menu> menuList = menuRepository.findByPid(menu.getId());
+                        Map<String,Object> map = new HashMap<>();
+                        map.put("id",menu.getId());
+                        map.put("label",menu.getTitle());
+                        if(menuList!=null && menuList.size()!=0){
+                            map.put("children",getMenuTree(menuList));
+                        }
+                        list.add(map);
+                    }
+                }
+        );
+        return list;
+    }
+
+    @Override
     public List<MenuDto> queryAll(MenuQueryCriteria criteria, Boolean isQuery) throws Exception {
         Sort sort = new Sort(Sort.Direction.ASC, "menuSort");
         if(isQuery){

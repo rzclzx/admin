@@ -59,6 +59,13 @@ public class MenuController {
         menuService.download(menuService.queryAll(criteria, false), response);
     }
 
+    @ApiOperation("返回全部的菜单")
+    @GetMapping(value = "/tree")
+    @PreAuthorize("@el.check('menu:list','roles:list')")
+    public ResponseEntity getMenuTree(){
+        return new ResponseEntity<>(menuService.getMenuTree(menuService.findByPid(0)),HttpStatus.OK);
+    }
+
     @GetMapping(value = "/build")
     @ApiOperation("获取前端所需菜单")
     public ResponseEntity<Object> buildMenus(){
