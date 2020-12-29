@@ -75,6 +75,7 @@ public class MenuServiceImpl implements MenuService {
                         Map<String,Object> map = new HashMap<>();
                         map.put("id",menu.getId());
                         map.put("label",menu.getTitle());
+                        map.put("pid",menu.getPid());
                         if(menuList!=null && menuList.size()!=0){
                             map.put("children",getMenuTree(menuList));
                         }
